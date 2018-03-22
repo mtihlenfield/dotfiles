@@ -1,10 +1,8 @@
-export ZSH=/home/strav/.oh-my-zsh
+export ZSH=/home/$(whoami)/.oh-my-zsh
 export SCRIPTS=$HOME/scripts
 export NPM_PACKAGES=$HOME/.npm-packages/bin
-export RETDEC=/opt/retdec/bin
-export PATH=$PATH:$SCRIPTS:$NPM_PACKAGES:$RETDEC
+export PATH=$PATH:$SCRIPTS:$NPM_PACKAGES
 export EDITOR='vim'
-export ANDROID_HOME=/opt/android-sdk
 
 export MANPATH="$NPM_PACKAGES/share/man:$(manpath)"
 
