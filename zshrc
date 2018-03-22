@@ -1,4 +1,4 @@
-export ZSH=/home/$(whoami)/.oh-my-zsh
+export ZSH=~/.oh-my-zsh
 export SCRIPTS=$HOME/scripts
 export NPM_PACKAGES=$HOME/.npm-packages/bin
 export PATH=$PATH:$SCRIPTS:$NPM_PACKAGES
