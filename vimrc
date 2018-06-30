@@ -71,7 +71,7 @@ let g:ale_linters = {"c": ["gcc"], "python": ["flake8"]}
 " General
 " au BufNewFile,BufRead *.md,*.txt,*.py,*.c,*.h,*.js,*.jsx,*.json,*.html,*.css,*.scss setl ts=4 softtabstop=4 sw=4 et autoindent
 setl ts=4 softtabstop=4 sw=4 et autoindent
-au BufWritePre *.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
+au BufWritePre *.sh,*.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
 set number
 set relativenumber
 set autoindent
