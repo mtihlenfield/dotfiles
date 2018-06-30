@@ -13,6 +13,7 @@ Plugin 'w0rp/ale'
 Plugin 'embear/vim-localvimrc'
 Plugin 'SirVer/ultisnips'
 Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf',
 Plugin 'junegunn/fzf.vim'
 Plugin 'mileszs/ack.vim'
