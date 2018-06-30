@@ -1,6 +1,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+" test
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -11,8 +12,8 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'w0rp/ale'
 Plugin 'embear/vim-localvimrc'
 Plugin 'SirVer/ultisnips'
-Plugin 'junegunn/fzf',
 Plugin 'tpope/vim-fugitive'
+Plugin 'junegunn/fzf',
 Plugin 'junegunn/fzf.vim'
 Plugin 'mileszs/ack.vim'
 Plugin 'honza/vim-snippets'
