@@ -20,7 +20,8 @@ Plugin 'honza/vim-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arcticicestudio/nord-vim'
-Bundle 'Valloric/YouCompleteMe'
+Plugin 'townk/vim-autoclose'
+Plugin 'Valloric/YouCompleteMe'
 
 
 " All of your Plugins must be added before the following line
@@ -75,7 +76,6 @@ setl ts=4 softtabstop=4 sw=4 et autoindent
 au BufWritePre *.sh,*.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
 set number
 set relativenumber
-set autoindent
 set background=dark
 set encoding=utf-8
 set mouse=a
