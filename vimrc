@@ -21,8 +21,10 @@ Plugin 'honza/vim-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arcticicestudio/nord-vim'
-Plugin 'townk/vim-autoclose'
 Plugin 'Valloric/YouCompleteMe'
+" I'd like to use this but it cause a ~3 second delay when changing from
+" insert-> normal mode
+" Plugin 'townk/vim-autoclose'
 
 
 " All of your Plugins must be added before the following line
