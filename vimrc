@@ -69,9 +69,12 @@ let g:nord_uniform_status_lines = 1
 let g:ale_linters = {"c": ["gcc"], "python": ["flake8"]}
 
 " General
+" Search and replace word in file
+nmap <S-r> "ryiw :%s/<C-R>r/
 setl ts=4 softtabstop=4 sw=4 et autoindent
 au BufWritePre *.sh,*.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
 set updatetime=200 " Mostly doing this so that gitgutter changes show up more quicky
+set ttimeoutlen=50
 set number
 set relativenumber
 set background=dark
