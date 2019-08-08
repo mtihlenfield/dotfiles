@@ -16,12 +16,12 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'junegunn/fzf',
 Plugin 'junegunn/fzf.vim'
-Plugin 'mileszs/ack.vim'
 Plugin 'honza/vim-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arcticicestudio/nord-vim'
 Plugin 'Valloric/YouCompleteMe'
+Plugin 'majutsushi/tagbar'
 " I'd like to use this but it cause a ~3 second delay when changing from
 " insert-> normal mode
 " Plugin 'townk/vim-autoclose'
