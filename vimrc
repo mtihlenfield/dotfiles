@@ -83,6 +83,7 @@ set background=dark
 set encoding=utf-8
 set mouse=a
 set clipboard=unnamedplus " Sets the default clipboard to the system clipboard
+set virtualedit=all " TODO I only really want this for markdown/rs/text
 colorscheme nord
 highlight LineNr ctermfg=grey
 syntax on
