@@ -2,8 +2,8 @@ export ZSH=~/.oh-my-zsh
 export SCRIPTS=$HOME/scripts
 export LOCAL_BIN=$HOME/.local/bin
 export HEXEDITOR=/opt/010editor
-export GHIDRA=/opt/ghidra
-export PATH=$PATH:$SCRIPTS:$LOCAL_BIN:$HEXEDITOR:$GHIDRA
+export GRADLE=/opt/gradle-6.7.1/bin
+export PATH=$PATH:$SCRIPTS:$LOCAL_BIN:$HEXEDITOR:$GRADLE
 export EDITOR='vim'
 
 autoload -Uz promptinit
@@ -14,12 +14,12 @@ promptinit
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="bira"
 
-plugins=(git zsh-syntax-highlighting virtualenv)
+plugins=(git zsh-syntax-highlighting zsh-autosuggestions virtualenv)
 export VIRTUAL_ENV_DISABLE_PROMPT=0
 
 source $ZSH/oh-my-zsh.sh
 
-alias fucking='sudo'
+alias keepass-diff='docker run -it --rm -v "$(pwd)":/app:ro "keepass-diff:custom-local"'
 
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

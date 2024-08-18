@@ -22,6 +22,7 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'arcticicestudio/nord-vim'
 Plugin 'Valloric/YouCompleteMe'
 Plugin 'majutsushi/tagbar'
+Plugin 'zaid/vim-rec'
 " I'd like to use this but it cause a ~3 second delay when changing from
 " insert-> normal mode
 " Plugin 'townk/vim-autoclose'
@@ -68,13 +69,19 @@ let g:nord_italic_comments = 1
 let g:nord_uniform_status_lines = 1
 
 " ALE
-let g:ale_linters = {"c": ["gcc"], "python": ["flake8"]}
+let g:ale_linters = {"c": ["gcc"], "python": ["pylint", "pycodestyle"]}
+let g:ale_fixers = {"python": ["isort", "autopep8"]}
+let g:ale_fix_on_save = 1
+
+" Poke
+au BufRead,BufNewFile *.pk set filetype=poke
+" let g:poke_highlight_vars = 1
 
 " General
 " Search and replace word in file
 nmap <S-r> "ryiw :%s/<C-R>r/
-setl ts=4 softtabstop=4 sw=4 et autoindent
-au BufWritePre *.sh,*.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
+setl tabstop=4 softtabstop=4 sw=4 et autoindent
+au BufWritePre *.patch,*.pk,*.sh,*.md,*.txt,*.c,*.jsx,*.js,*.py %s/\s\+$//e " Get rid of extra whitespace on save
 set updatetime=200 " Mostly doing this so that gitgutter changes show up more quicky
 set ttimeoutlen=50
 set number
@@ -83,7 +90,7 @@ set background=dark
 set encoding=utf-8
 set mouse=a
 set clipboard=unnamedplus " Sets the default clipboard to the system clipboard
-set virtualedit=all " TODO I only really want this for markdown/rs/text
-colorscheme nord
+" set virtualedit=all " TODO I only really want this for markdown/rs/text
+" colorscheme nord
 highlight LineNr ctermfg=grey
 syntax on
