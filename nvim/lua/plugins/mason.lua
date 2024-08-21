@@ -19,6 +19,7 @@ return {
                 "yamlls",
                 "robotframework_ls",
                 "bashls",
+                "dockerls"
             },
             automatic_installation = false,
         })
@@ -31,6 +32,7 @@ return {
         lspconfig.yamlls.setup({})
         lspconfig.robotframework_ls.setup({})
         lspconfig.bashls.setup({})
+        lspconfig.dockerls.setup({})
 
         vim.api.nvim_create_autocmd(
             'LspAttach',

@@ -9,7 +9,9 @@ return {
             go = { "golangcilint" },
             robot = { "robocop" },
             c = { "clangtidy" },
-            bash = { "shellcheck" }
+            bash = { "shellcheck" },
+            yaml = { "yamllint" },
+            dockerfile = { "hadolint" }
         }
 
         local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
