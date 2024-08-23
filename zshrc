@@ -6,6 +6,9 @@ export PATH=$PATH:$SCRIPTS:$LOCAL_BIN:$YABRIDGE
 export PATH=$PATH:/usr/local/go/bin
 export EDITOR='nvim'
 
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
 autoload -Uz promptinit
 promptinit
 
@@ -14,7 +17,8 @@ promptinit
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="bira"
 
-plugins=(git zsh-syntax-highlighting virtualenv)
+# I think zsh-syntax-highlighting needs to be last
+plugins=(git virtualenv zsh-syntax-highlighting)
 export VIRTUAL_ENV_DISABLE_PROMPT=0
 
 source $ZSH/oh-my-zsh.sh
@@ -28,3 +32,5 @@ alias dns-search='dig +short'
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+[ -f "/home/strav/.ghcup/env" ] && . "/home/strav/.ghcup/env" # ghcup-env
