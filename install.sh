@@ -2,6 +2,7 @@
 set -xe
 
 export DEBIAN_FRONTEND=noninteractive
+export GOMODCACHE=~/.go
 
 NVIM_APPIMAGE="/opt/nvim.appimage"
 DFUSER=dfuser
@@ -12,7 +13,8 @@ DEFAULT_TAR_EXCLUDES=(--exclude='*.pyc' --exclude='*.log')
 
 declare -a PACKAGES
 
-# Array of (local path, tarball, sudo) pairs. Paths are relative to $HOME
+# Array of (local path, tarball, global) pairs. Paths are relative to $HOME
+# NOTE: Global assumes the path is relative to / and will require sudo
 PACKAGES[0]=".local/share/fonts;fonts.tar.gz;0"
 PACKAGES[1]=".oh-my-zsh;oh-my-zsh.tar.gz;0"
 PACKAGES[2]=".tmux;tmux.tar.gz;0"
@@ -21,14 +23,13 @@ PACKAGES[4]=".cabal;cabal.tar.gz;0"
 PACKAGES[5]=".local/share/nvim;nvim.tar.gz;0"
 PACKAGES[6]="$NVIM_APPIMAGE;nvim-app.tar.gz;1"
 PACKAGES[7]="/usr/local/go;go.tar.gz;1"
-# TODO: $GOMODCACHE?
+# TODO: luarocks is missing from this
 
 echo "IN_DOCKER? $IN_DOCKER"
 
 
 create_package () {
     build_dir="$(mktemp -d)"
-    packages_full_dir="$build_dir/dotfiles/$PACKAGES_DIR"
 
     # Clear out the existing packeg if it exists
     rm -rf "$FINAL_DOTFILE_PACKAGE"
@@ -37,15 +38,22 @@ create_package () {
     cp -r "$(pwd)" "$build_dir"
 
     # Create the packages dir
+    packages_full_dir="$build_dir/dotfiles/$PACKAGES_DIR"
     mkdir -p "$packages_full_dir"
 
     for package in "${PACKAGES[@]}"; do
         IFS=";" read -r -a arr <<< "${package}"
 
         dir_path="${arr[0]}"
-        tar_path="$PACKAGES_DIR/${arr[1]}"
+        tar_path="$packages_full_dir/${arr[1]}"
+        global="${arr[2]}"
 
-        tar "${DEFAULT_TAR_EXCLUDES[@]}" -C "$HOME" -czf "$packages_full_dir/$tar_path" "$dir_path"
+        if [ "$global" -eq 1 ]; then
+            tar "${DEFAULT_TAR_EXCLUDES[@]}" -C / -czf "$tar_path" "$dir_path"
+        else
+            tar "${DEFAULT_TAR_EXCLUDES[@]}" -C "$HOME" -czf "$tar_path" "$dir_path"
+        fi
+
     done
 
     # Build final package
@@ -54,22 +62,20 @@ create_package () {
 }
 
 unpack_package() {
+    mkdir -p ~/.config
+
     for package in "${PACKAGES[@]}"; do
         IFS=";" read -r -a arr <<< "${package}"
 
         tar_path="$PACKAGES_DIR/${arr[1]}"
-        use_sudo="${arr[2]}"
+        global="${arr[2]}"
 
-        if [ "$use_sudo" -eq 1 ]; then
-            sudo_cmd="sudo"
+        if [ "$global" -eq 1 ]; then
+            sudo tar -xf "$tar_path" -C /
         else
-            sudo_cmd=""
+            tar -xf "$tar_path" -C "$HOME"
         fi
-
-        "$sudo_cmd" tar -xf "$PACKAGES_DIR/tar_path" -C "$HOME"
     done
-
-    echo "Done unpacking"
 }
 
 fixup_mason () {
@@ -219,12 +225,7 @@ online_install () {
     install_plugins
 }
 
-if [ "$#" -eq 0 ]; then
-    online_install
-    exit
-elif [ "$1" = "package" ]; then
-    create_package
-elif [ "$1" = "unpack" ]; then
+offline_install () {
     # Offline install still assumes there is a pip and apt mirror
     install_apt_packages
     install_pip_packages
@@ -232,6 +233,19 @@ elif [ "$1" = "unpack" ]; then
     fixup_nvim
     fixup_mason
     link_dotfiles
+}
+
+if [ "$#" -eq 0 ]; then
+    online_install
+elif [ "$1" = "package" ]; then
+    create_package
+elif [ "$1" = "unpack" ]; then
+    if [ ! -d "$PACKAGES_DIR" ]; then
+        echo "Missing $PACKAGES_DIR dir!"
+        exit 1
+    fi
+
+    offline_install
 else
     echo "Invalid command: $1"
 fi

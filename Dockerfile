@@ -5,7 +5,8 @@ ENV IN_DOCKER=1
 ENV DFUSER=dfuser
 
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
-RUN apt-get update && apt-get install -y --no-install-recommends sudo locales
+# sudo and vim for debugging, locales for setting the correct locale
+RUN apt-get update && apt-get install -y --no-install-recommends sudo locales vim
 
 # Set the locale - This fixes some cursor issues in zsh
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \
@@ -15,17 +16,26 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8     
 RUN dpkg-reconfigure locales
 
-# NOTE: This container isn't actually intennded to be used anywhere,
+# NOTE: This container isn't actually intended to be used anywhere,
 # so the password doesn't matter
 RUN adduser "$DFUSER" && chpasswd "$DFUSER":password
 RUN echo "$DFUSER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers
 
-COPY --chown="$DFUSER" . /home/"$DFUSER"/dotfiles
-
 USER "$DFUSER"
-
-WORKDIR /home/"$DFUSER"/dotfiles
+WORKDIR /home/"$DFUSER"/
 
 FROM dotfiles-base AS dotfiles
 
+COPY --chown="$DFUSER" . /home/"$DFUSER"/dotfiles
+
+WORKDIR /home/"$DFUSER"/dotfiles
+
 RUN ./install.sh
+
+FROM dotfiles-base AS dotfiles-offline-test
+
+ADD --chown="$DFUSER" dotfiles.tar.gz  /home/"$DFUSER"
+
+WORKDIR "/home/$DFUSER/dotfiles"
+
+RUN ./install.sh unpack

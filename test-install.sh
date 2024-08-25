@@ -1,18 +1,12 @@
 #!/bin/bash
-set -xe
 
-if [ ! -f "dotfiles.tar.gz" ]; then
-    echo "Missing dotfiles.tar.gz!"
-    exit 1
-fi
-
-docker build --no-cache -t dotfiles:latest .
+./package-dockerized.sh
 
 docker run \
     --net=host \
     -it \
     --rm \
-    -u user \
-    -v "$(pwd)/dotfiles.tar.gz":/root/dotfiles.tar.gz \
-    dotfiles:latest \
-    /bin/zsh
+    -u dfuser \
+    -v "$(pwd)/dotfiles.tar.gz:/home/dfuser/dotfiles.tar.gz" \
+    dotfiles-base:latest \
+    "tar -xf dotfiles.tar.gz && cd dotfiles && ./install.sh unpack"
