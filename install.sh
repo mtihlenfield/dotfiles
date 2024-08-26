@@ -31,7 +31,7 @@ echo "IN_DOCKER? $IN_DOCKER"
 create_package () {
     build_dir="$(mktemp -d)"
 
-    # Clear out the existing packeg if it exists
+    # Clear out the existing package if it exists
     rm -rf "$FINAL_DOTFILE_PACKAGE"
 
     # Add dotfiles to the build

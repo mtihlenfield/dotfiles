@@ -4,7 +4,7 @@ Linux dotfiles and scripts for installing my development environment
 
 Use `./install.sh` for a normal internet connected install.
 
-`./install.sh package` can be used to generate a tarball that contains all of the binaries/dependencies need to install the dev environment that is not internet connected (but that still has an apt and pip mirr). This assumes you have already run `install.sh` to download/install all of the files. You can use `package-dockerized.sh` to generate the package from a clean docker container (this is how you should do it).
+`./install.sh package` can be used to generate a tarball that contains all of the binaries/dependencies need to install the dev environment that is not internet connected (but that still has an apt and pip mirror). This assumes you have already run `install.sh` to download/install all of the files. You can use `package-dockerized.sh` to generate the package from a clean docker container (this is how you should do it).
 
 To install the offline package, untar the tarball, cd in to `dotfiles`, and run `./install.sh unpack`
 

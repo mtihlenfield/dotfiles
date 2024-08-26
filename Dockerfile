@@ -29,7 +29,7 @@ FROM dotfiles-base AS dotfiles-offline-test
 
 USER root
 
-# Add another user to test the mason fixups
+# Add another user to test the mason fixup
 RUN adduser "$OFUSER" && chpasswd "$OFUSER":password
 RUN echo "$OFUSER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers
 
