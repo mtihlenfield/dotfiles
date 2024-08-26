@@ -57,10 +57,10 @@ return {
             {
                 group = vim.api.nvim_create_augroup('UserLspConfig', {}),
                 callback = function(ev)
-                    -- TODO: set up better keymaps - don't like these
-                    -- TODO: Also integrate with telescope for things like references
                     vim.keymap.set('n', '<leader>ca', vim.lsp.buf.code_action)
                     vim.keymap.set('n', '<leader>jd', vim.lsp.buf.declaration)
+                    vim.keymap.set("n", "<leader>r", vim.lsp.buf.rename)
+                    vim.keymap.set("n", "<leader>h", vim.lsp.buf.hover)
                 end
             }
         )
