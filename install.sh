@@ -5,6 +5,7 @@ export DEBIAN_FRONTEND=noninteractive
 export GOMODCACHE=~/.go
 
 NVIM_APPIMAGE="/opt/nvim.appimage"
+HADOLINT_BIN="/opt/hadolint"
 DFUSER=dfuser
 PACKAGES_DIR="packages"
 FINAL_DOTFILE_PACKAGE="dotfiles.tar.gz"
@@ -19,11 +20,10 @@ PACKAGES[0]=".local/share/fonts;fonts.tar.gz;0"
 PACKAGES[1]=".oh-my-zsh;oh-my-zsh.tar.gz;0"
 PACKAGES[2]=".tmux;tmux.tar.gz;0"
 PACKAGES[3]=".nvm;nvm.tar.gz;0"
-PACKAGES[4]=".cabal;cabal.tar.gz;0"
-PACKAGES[5]=".local/share/nvim;nvim.tar.gz;0"
-PACKAGES[6]="$NVIM_APPIMAGE;nvim-app.tar.gz;1"
+PACKAGES[4]=".local/share/nvim;nvim.tar.gz;0"
+PACKAGES[5]="$NVIM_APPIMAGE;nvim-app.tar.gz;1"
+PACKAGES[6]="$HADOLINT_BIN;hadolint-app.tar.gz;1"
 PACKAGES[7]="/usr/local/go;go.tar.gz;1"
-# TODO: luarocks is missing from this
 
 echo "IN_DOCKER? $IN_DOCKER"
 
@@ -82,7 +82,7 @@ fixup_mason () {
     if [ "$(whoami)" != "$DFUSER" ]; then
         # Mason installs packages in a way that some of them will reference /home/$DFUSER instead of ~.
         # This command is a little risky, but so far it works
-        find ~/.local/share/nvim \
+        find ~/.local/share/nvim/mason \
             -type f -exec sed -i -e "s/\/home\/$DFUSER/\/home\/$(whoami)/g" "{}" \;
 
         # Fix mason symlinks
@@ -174,12 +174,10 @@ install_manual_deps () {
     # install tpm (tmux plugin manager)
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
-    # install ghcup (haskell version manager)
-    curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | \
-        BOOTSTRAP_HASKELL_NONINTERACTIVE=1 BOOTSTRAP_HASKELL_GHC_VERSION=latest \
-        BOOTSTRAP_HASKELL_CABAL_VERSION=latest BOOTSTRAP_HASKELL_INSTALL_STACK=1 \
-        BOOTSTRAP_HASKELL_INSTALL_HLS=0 BOOTSTRAP_HASKELL_ADJUST_BASHRC=0 sh
-    source "$HOME/.ghcup/env"
+    # install hadolint
+    wget https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
+    chmod +x hadolint-Linux-x86_64
+    sudo mv hadolint-Linux-x86_64 /opt/hadolint
 
     # install nvim
     wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/latest/download/nvim.appimage'
@@ -187,18 +185,20 @@ install_manual_deps () {
     sudo mv /tmp/nvim.appimage "$NVIM_APPIMAGE"
 }
 
-fixup_nvim () {
+link_binaries () {
     # appimages require fuse file system support, which we won't have
     # in a docker container. So instead we extract the contents of the
     # appimage
     if [[ -v IN_DOCKER ]]; then
-        "$NVIM_APPIMAGE" --appimage-extract
+        sudo "$NVIM_APPIMAGE" --appimage-extract
 
         sudo mv squashfs-root /opt/nvim
         sudo ln -s /opt/nvim/AppRun /usr/bin/nvim
     else
         sudo ln -s "$NVIM_APPIMAGE" /usr/bin/nvim
     fi
+
+    sudo ln -s "$HADOLINT_BIN" /usr/bin/hadolint
 }
 
 link_dotfiles () {
@@ -220,7 +220,7 @@ online_install () {
     install_apt_packages
     install_pip_packages
     install_manual_deps
-    fixup_nvim
+    link_binaries
     link_dotfiles
     install_plugins
 }
@@ -230,7 +230,7 @@ offline_install () {
     install_apt_packages
     install_pip_packages
     unpack_package
-    fixup_nvim
+    link_binaries
     fixup_mason
     link_dotfiles
 }

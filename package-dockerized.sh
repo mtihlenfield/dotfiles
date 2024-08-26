@@ -1,6 +1,6 @@
 #!/bin/bash
+set -xe
 
-docker build --no-cache --target dotfiles-base -t dotfiles-base:latest .
 docker build --no-cache -t dotfiles:latest .
 
 docker run \

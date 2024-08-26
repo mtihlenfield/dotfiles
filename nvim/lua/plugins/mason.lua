@@ -33,7 +33,6 @@ return {
             ensure_installed = {
                 -- NOTE: These are packages that are not installable via apt. Mason makes it easier
                 "golangci-lint", -- go
-                "hadolint",      -- dockerfile
             },
         })
 

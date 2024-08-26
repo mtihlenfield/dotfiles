@@ -3,6 +3,7 @@ FROM ubuntu:20.04 AS dotfiles-base
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_DOCKER=1
 ENV DFUSER=dfuser
+ENV OFUSER=ofuser
 
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 # sudo and vim for debugging, locales for setting the correct locale
@@ -24,6 +25,23 @@ RUN echo "$DFUSER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers
 USER "$DFUSER"
 WORKDIR /home/"$DFUSER"/
 
+FROM dotfiles-base AS dotfiles-offline-test
+
+USER root
+
+# Add another user to test the mason fixups
+RUN adduser "$OFUSER" && chpasswd "$OFUSER":password
+RUN echo "$OFUSER ALL=(ALL:ALL) NOPASSWD: ALL" > /etc/sudoers
+
+ADD --chown="$OFUSER" dotfiles.tar.gz  "/home/$OFUSER"
+RUN chown -R "$OFUSER:$OFUSER" "/home/$OFUSER/dotfiles"
+
+USER "$OFUSER"
+
+WORKDIR "/home/$OFUSER/dotfiles"
+
+RUN ./install.sh unpack
+
 FROM dotfiles-base AS dotfiles
 
 COPY --chown="$DFUSER" . /home/"$DFUSER"/dotfiles
@@ -31,11 +49,3 @@ COPY --chown="$DFUSER" . /home/"$DFUSER"/dotfiles
 WORKDIR /home/"$DFUSER"/dotfiles
 
 RUN ./install.sh
-
-FROM dotfiles-base AS dotfiles-offline-test
-
-ADD --chown="$DFUSER" dotfiles.tar.gz  /home/"$DFUSER"
-
-WORKDIR "/home/$DFUSER/dotfiles"
-
-RUN ./install.sh unpack
