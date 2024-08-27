@@ -42,16 +42,6 @@ return {
 
         local lspconfig = require("lspconfig")
 
-        -- See the :Mason menu for how package names match with lspconfig names
-        lspconfig.lua_ls.setup({})
-        lspconfig.pyright.setup({})
-        lspconfig.gopls.setup({})
-        lspconfig.jsonls.setup({})
-        lspconfig.yamlls.setup({})
-        lspconfig.robotframework_ls.setup({})
-        lspconfig.bashls.setup({})
-        lspconfig.dockerls.setup({})
-
         vim.api.nvim_create_autocmd(
             'LspAttach',
             {
