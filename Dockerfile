@@ -1,4 +1,4 @@
-FROM ubuntu:20.04 AS dotfiles-base
+FROM ubuntu:22.04 AS dotfiles-base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_DOCKER=1

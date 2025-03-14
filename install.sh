@@ -57,7 +57,7 @@ create_package () {
     done
 
     # Build final package
-    tar -C "$build_dir" -czf "$FINAL_DOTFILE_PACKAGE" "dotfiles"
+    tar -C "$build_dir" -czf "$FINAL_DOTFILE_PACKAGE" "dotfiles/."
     echo "Done packing: $FINAL_DOTFILE_PACKAGE"
 }
 
@@ -125,7 +125,8 @@ install_apt_packages () {
         libncurses-dev \
         libncurses5 \
         libtinfo5 \
-        zlib1g-dev
+        zlib1g-dev \
+        clang-tidy
 }
 
 install_pip_packages () {
@@ -180,7 +181,7 @@ install_manual_deps () {
     sudo mv hadolint-Linux-x86_64 /opt/hadolint
 
     # install nvim
-    wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/latest/download/nvim.appimage'
+    wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/download/v0.10.4/nvim-linux-x86_64.appimage'
     chmod +x /tmp/nvim.appimage
     sudo mv /tmp/nvim.appimage "$NVIM_APPIMAGE"
 }
@@ -214,6 +215,7 @@ install_plugins () {
     /bin/zsh -c "source ~/.zshrc ; nvim --headless '+Lazy! sync' +qa"
     /bin/zsh -c "source ~/.zshrc ; nvim --headless '+MasonInstallAll' +qa"
     /bin/zsh -c "source ~/.zshrc ; nvim --headless '+MasonToolsInstallSync' +qa"
+    /bin/zsh -c "source ~/.zshrc ; nvim --headless '+TSUpdateSync' +qa"
 }
 
 online_install () {
