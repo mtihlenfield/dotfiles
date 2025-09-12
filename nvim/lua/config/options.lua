@@ -36,3 +36,5 @@ vim.opt.smartcase = true  -- if you include mixed case in your search, assumes y
 -- spellcheck
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
+
+vim.diagnostic.config({ virtual_text = true })
