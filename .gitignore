@@ -1,2 +1,3 @@
 *.tar.gz
 packages
+nvim/lazy-lock.json

@@ -40,8 +40,6 @@ return {
             vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
         end, {})
 
-        local lspconfig = require("lspconfig")
-
         vim.api.nvim_create_autocmd(
             'LspAttach',
             {
@@ -54,17 +52,5 @@ return {
                 end
             }
         )
-
-        local cmp_nvim_lsp = require("cmp_nvim_lsp")
-        local capabilities = cmp_nvim_lsp.default_capabilities()
-
-        mason_lspconfig.setup_handlers({
-            -- default handler for installed servers
-            function(server_name)
-                lspconfig[server_name].setup({
-                    capabilities = capabilities,
-                })
-            end,
-        })
     end,
 }
