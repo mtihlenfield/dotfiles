@@ -37,4 +37,6 @@ vim.opt.smartcase = true  -- if you include mixed case in your search, assumes y
 vim.opt.spelllang = "en_us"
 vim.opt.spell = true
 
+-- virtual_text = true makes the diagnostic messages show up next to the lines
+-- where the errors are in the text
 vim.diagnostic.config({ virtual_text = true })
