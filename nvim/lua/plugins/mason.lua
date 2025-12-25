@@ -19,7 +19,8 @@ return {
             "yaml-language-server",
             "robotframework-lsp",
             "bash-language-server",
-            "dockerfile-language-server"
+            "dockerfile-language-server",
+            "clangd"
         }
 
         mason_lspconfig.setup({

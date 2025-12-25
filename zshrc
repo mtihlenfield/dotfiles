@@ -2,8 +2,9 @@ export ZSH=~/.oh-my-zsh
 export SCRIPTS=$HOME/scripts
 export LOCAL_BIN=$HOME/.local/bin
 export YABRIDGE=$HOME/.local/share/yabridge
+export GOPATH=$HOME/go
 export PATH=$PATH:$SCRIPTS:$LOCAL_BIN:$YABRIDGE
-export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 export EDITOR='nvim'
 
 export LC_ALL=en_US.UTF-8
