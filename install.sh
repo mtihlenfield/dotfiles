@@ -126,7 +126,9 @@ install_apt_packages () {
         libncurses5 \
         libtinfo5 \
         zlib1g-dev \
-        clang-tidy
+        clang \
+        clang-tidy \
+        clangd
 }
 
 install_pip_packages () {
