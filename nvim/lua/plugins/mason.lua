@@ -20,7 +20,8 @@ return {
             "robotframework-lsp",
             "bash-language-server",
             "dockerfile-language-server",
-            "clangd"
+            "clangd",
+            "rust-analyzer"
         }
 
         mason_lspconfig.setup({

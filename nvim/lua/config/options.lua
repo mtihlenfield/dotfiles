@@ -40,3 +40,6 @@ vim.opt.spell = true
 -- virtual_text = true makes the diagnostic messages show up next to the lines
 -- where the errors are in the text
 vim.diagnostic.config({ virtual_text = true })
+
+-- filetypes
+vim.g.c_syntax_for_h = 1

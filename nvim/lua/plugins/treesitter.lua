@@ -35,7 +35,8 @@ return {
                 "make",
                 "robot",
                 "asm",
-                "xml"
+                "xml",
+                "rust"
             },
         })
     end,
