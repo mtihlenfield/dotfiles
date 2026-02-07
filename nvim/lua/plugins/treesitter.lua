@@ -36,7 +36,8 @@ return {
                 "robot",
                 "asm",
                 "xml",
-                "rust"
+                "rust",
+                "toml"
             },
         })
     end,

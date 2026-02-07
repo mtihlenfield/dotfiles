@@ -21,7 +21,8 @@ return {
             "bash-language-server",
             "dockerfile-language-server",
             "clangd",
-            "rust-analyzer"
+            "rust-analyzer",
+            "tombi"
         }
 
         mason_lspconfig.setup({
