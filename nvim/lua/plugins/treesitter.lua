@@ -37,7 +37,8 @@ return {
                 "asm",
                 "xml",
                 "rust",
-                "toml"
+                "toml",
+                "scheme"
             },
         })
     end,
