@@ -1,11 +1,14 @@
 #!/bin/bash
 set -xe
 
+# NOTE: Some dependencies (like cargo, rustc) I am leaving to be installed manually on the airgapped network
+
 export DEBIAN_FRONTEND=noninteractive
 export GOMODCACHE=~/.go
 
 NVIM_APPIMAGE="/opt/nvim.appimage"
 HADOLINT_BIN="/opt/hadolint"
+FZF_BIN="/opt/fzf"
 DFUSER=dfuser
 PACKAGES_DIR="packages"
 FINAL_DOTFILE_PACKAGE="dotfiles.tar.gz"
@@ -19,11 +22,12 @@ declare -a PACKAGES
 PACKAGES[0]=".local/share/fonts;fonts.tar.gz;0"
 PACKAGES[1]=".oh-my-zsh;oh-my-zsh.tar.gz;0"
 PACKAGES[2]=".tmux;tmux.tar.gz;0"
-PACKAGES[3]=".nvm;nvm.tar.gz;0"
-PACKAGES[4]=".local/share/nvim;nvim.tar.gz;0"
-PACKAGES[5]="$NVIM_APPIMAGE;nvim-app.tar.gz;1"
-PACKAGES[6]="$HADOLINT_BIN;hadolint-app.tar.gz;1"
-PACKAGES[7]="/usr/local/go;go.tar.gz;1"
+PACKAGES[4]="$FZF_BIN;fzf.tar.gz;1"
+PACKAGES[5]=".nvm;nvm.tar.gz;0"
+PACKAGES[6]=".local/share/nvim;nvim.tar.gz;0"
+PACKAGES[7]="$NVIM_APPIMAGE;nvim-app.tar.gz;1"
+PACKAGES[8]="$HADOLINT_BIN;hadolint-app.tar.gz;1"
+PACKAGES[9]="/usr/local/go;go.tar.gz;1"
 
 echo "IN_DOCKER? $IN_DOCKER"
 
@@ -58,7 +62,7 @@ create_package () {
     
     # Build final package
     sudo tar -C "$build_dir" -czf "$FINAL_DOTFILE_PACKAGE" "dotfiles/."
-    sudo chown $DFUSER:$DFUSER $FINAL_DOTFILE_PACKAGE
+    sudo chown 1000:1000 $FINAL_DOTFILE_PACKAGE
     echo "Done packing: $FINAL_DOTFILE_PACKAGE"
 }
 
@@ -114,7 +118,6 @@ install_apt_packages () {
         yamllint \
         zsh \
         tmux \
-        fzf \
         fuse \
         libfuse2 \
         git \
@@ -175,10 +178,22 @@ install_manual_deps () {
     # install tpm (tmux plugin manager)
     git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 
+    # install fzf
+    curl -sL https://github.com/junegunn/fzf/releases/download/v0.73.1/fzf-0.73.1-linux_amd64.tar.gz | tar -xz
+    chmod +x fzf
+    sudo mv fzf "$FZF_BIN"
+
     # install hadolint
     wget https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64
     chmod +x hadolint-Linux-x86_64
-    sudo mv hadolint-Linux-x86_64 /opt/hadolint
+    sudo mv hadolint-Linux-x86_64 "$HADOLINT_BIN"
+
+    # install rust
+    # Note that I'm not bothering to do this in a way that is easy to package up for offline install.
+    # I'm using our offline mirror for install there.
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+    source "$HOME/.cargo/env"
+    rustup component add rustfmt rust-analyzer
 
     # install nvim
     wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/download/v0.11.4/nvim-linux-x86_64.appimage'
@@ -200,6 +215,7 @@ link_binaries () {
     fi
 
     sudo ln -s "$HADOLINT_BIN" /usr/bin/hadolint
+    sudo ln -s "$FZF_BIN" /usr/bin/fzf
 }
 
 link_dotfiles () {

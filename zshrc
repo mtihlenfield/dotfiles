@@ -28,11 +28,12 @@ source $ZSH/oh-my-zsh.sh
 alias keepass-diff='docker run -it --rm -v "$(pwd)":/app:ro "keepass-diff:custom-local"'
 alias dns-search='dig +short'
 
-
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+source <(fzf --zsh)
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 [ -f "/home/strav/.ghcup/env" ] && . "/home/strav/.ghcup/env" # ghcup-env
+
+source "$HOME/.cargo/env"
