@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS dotfiles-base
+FROM ubuntu:24.04 AS dotfiles-base
 
 ENV DEBIAN_FRONTEND=noninteractive
 ENV IN_DOCKER=1
@@ -7,7 +7,7 @@ ENV OFUSER=ofuser
 
 RUN ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 # sudo and vim for debugging, locales for setting the correct locale
-RUN apt-get update && apt-get install -y --no-install-recommends sudo locales vim
+RUN apt-get update && apt-get install -y --no-install-recommends sudo locales vim adduser
 
 # Set the locale - This fixes some cursor issues in zsh
 RUN sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen && \

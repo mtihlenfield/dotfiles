@@ -122,9 +122,6 @@ install_apt_packages () {
         libffi-dev \
         libgmp-dev \
         libgmp10 \
-        libncurses-dev \
-        libncurses5 \
-        libtinfo5 \
         zlib1g-dev \
         clang \
         clang-tidy \
@@ -132,7 +129,7 @@ install_apt_packages () {
 }
 
 install_pip_packages () {
-    python3 -m pip install \
+    pip install --user --break-system-packages \
         neovim \
         pylint \
         pycodestyle \

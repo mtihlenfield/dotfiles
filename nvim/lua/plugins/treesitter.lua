@@ -19,11 +19,13 @@ return {
             autotag = {
                 enable = true,
             },
+            sync_install = true,
             -- ensure these language parsers are installed
             ensure_installed = {
                 "python",
                 "go",
-                "robot",
+                "gomod",
+                "gosum",
                 "json",
                 "yaml",
                 "markdown",
@@ -32,13 +34,24 @@ return {
                 "vim",
                 "dockerfile",
                 "c",
+                "cmake",
                 "make",
+                "cpp",
                 "robot",
                 "asm",
-                "xml",
                 "rust",
                 "toml",
-                "scheme"
+                "scheme",
+                "csv",
+                "html",
+                "css",
+                "javascript",
+                "diff",
+                "linkerscript",
+                "nginx",
+                "sql",
+                "typescript",
+                "xml"
             },
         })
     end,
