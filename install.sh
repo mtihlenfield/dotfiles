@@ -55,9 +55,10 @@ create_package () {
         fi
 
     done
-
+    
     # Build final package
-    tar -C "$build_dir" -czf "$FINAL_DOTFILE_PACKAGE" "dotfiles/."
+    sudo tar -C "$build_dir" -czf "$FINAL_DOTFILE_PACKAGE" "dotfiles/."
+    sudo chown $DFUSER:$DFUSER $FINAL_DOTFILE_PACKAGE
     echo "Done packing: $FINAL_DOTFILE_PACKAGE"
 }
 
