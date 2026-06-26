@@ -196,7 +196,7 @@ install_manual_deps () {
     rustup component add rustfmt rust-analyzer
 
     # install nvim
-    wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/download/v0.11.4/nvim-linux-x86_64.appimage'
+    wget -O /tmp/nvim.appimage 'https://github.com/neovim/neovim/releases/download/v0.12.3/nvim-linux-x86_64.appimage'
     chmod +x /tmp/nvim.appimage
     sudo mv /tmp/nvim.appimage "$NVIM_APPIMAGE"
 }
