@@ -26,13 +26,17 @@ return {
             vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
         end, {})
 
+        local capabilities = require('cmp_nvim_lsp').default_capabilities()
+        vim.lsp.config('*', {
+            capabilities = capabilities,
+        })
+
         -- NOTE: Unfortunately the names we use to install do not match the nvim-lspconfig names...
         vim.lsp.enable("pyright")
         vim.lsp.enable("lua_ls")
         vim.lsp.enable("gopls")
         vim.lsp.enable("jsonls")
         vim.lsp.enable("yamlls")
-        -- TODO: something seems to be wrong with treesitter and robot
         vim.lsp.enable("robotframework_ls")
         vim.lsp.enable("bashls")
         vim.lsp.enable("dockerls")
