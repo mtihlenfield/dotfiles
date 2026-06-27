@@ -1,8 +1,6 @@
 #!/bin/bash
 set -xe
 
-# NOTE: Some dependencies (like cargo, rustc) I am leaving to be installed manually on the airgapped network
-
 export DEBIAN_FRONTEND=noninteractive
 export GOMODCACHE=~/.go
 

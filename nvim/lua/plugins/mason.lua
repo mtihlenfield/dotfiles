@@ -1,47 +1,44 @@
 return {
     "williamboman/mason.nvim",
     dependencies = {
-        "williamboman/mason-lspconfig.nvim",
         "neovim/nvim-lspconfig",
         "hrsh7th/cmp-nvim-lsp",
         { "antosha417/nvim-lsp-file-operations", config = true },
         { "folke/neodev.nvim",                   opts = {} },
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
     },
     config = function()
         require("mason").setup()
-        local mason_lspconfig = require("mason-lspconfig")
+
+        -- NOTE: There are a few language servers that I depend on, but that I don't want to use mason to install:
+        -- gopls, rust-analyzer, clangd
         local ensure_installed = {
             "lua-language-server",
             "pyright",
-            "gopls",
             "json-lsp",
             "yaml-language-server",
             "robotframework-lsp",
             "bash-language-server",
             "dockerfile-language-server",
-            "clangd",
-            "rust-analyzer",
             "tombi",
         }
-
-        mason_lspconfig.setup({
-            ensure_installed,
-            automatic_installation = true,
-            log_level = vim.log.levels.INFO,
-        })
-
-        local mason_tool_installer = require("mason-tool-installer")
-        mason_tool_installer.setup({
-            ensure_installed = {
-                -- NOTE: These are packages that are not installable via apt. Mason makes it easier
-                "golangci-lint", -- go
-            },
-        })
 
         vim.api.nvim_create_user_command("MasonInstallAll", function()
             vim.cmd("MasonInstall " .. table.concat(ensure_installed, " "))
         end, {})
+
+        -- NOTE: Unfortunately the names we use to install do not match the nvim-lspconfig names...
+        vim.lsp.enable("pyright")
+        vim.lsp.enable("lua_ls")
+        vim.lsp.enable("gopls")
+        vim.lsp.enable("jsonls")
+        vim.lsp.enable("yamlls")
+        -- TODO: something seems to be wrong with treesitter and robot
+        vim.lsp.enable("robotframework_ls")
+        vim.lsp.enable("bashls")
+        vim.lsp.enable("dockerls")
+        vim.lsp.enable("tombi")
+        vim.lsp.enable("clangd")
+        vim.lsp.enable("rust_analyzer")
 
         vim.api.nvim_create_autocmd(
             'LspAttach',
